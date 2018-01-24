@@ -29,42 +29,42 @@ Public Class frmDenpyo
     ' メモ : 以下のプロシージャは、Windows フォーム デザイナで必要です。
     ' Windows フォーム デザイナを使って変更してください。  
     ' コード エディタは使用しないでください。
-  Friend WithEvents dbgSub As System.Windows.Forms.DataGrid
-  Friend WithEvents Label4 As System.Windows.Forms.Label
-  Friend WithEvents Label3 As System.Windows.Forms.Label
-  Friend WithEvents Label2 As System.Windows.Forms.Label
-  Friend WithEvents Label1 As System.Windows.Forms.Label
-  Friend WithEvents txtPosition As System.Windows.Forms.TextBox
-  Friend WithEvents txtShainName As System.Windows.Forms.TextBox
-  Friend WithEvents txtKokyakuName As System.Windows.Forms.TextBox
-  Friend WithEvents txtShainID As System.Windows.Forms.TextBox
-  Friend WithEvents txtKokyakuID As System.Windows.Forms.TextBox
-  Friend WithEvents txtDate As System.Windows.Forms.TextBox
-  Friend WithEvents txtNo As System.Windows.Forms.TextBox
-  Friend WithEvents btnLast As System.Windows.Forms.Button
-  Friend WithEvents btnNext As System.Windows.Forms.Button
-  Friend WithEvents btnNew As System.Windows.Forms.Button
-  Friend WithEvents btnPrevious As System.Windows.Forms.Button
-  Friend WithEvents btnFirst As System.Windows.Forms.Button
-  Friend WithEvents MainMenu1 As System.Windows.Forms.MainMenu
-  Friend WithEvents mnuFile As System.Windows.Forms.MenuItem
-  Friend WithEvents mnuFileLoad As System.Windows.Forms.MenuItem
-  Friend WithEvents mnuFileSave As System.Windows.Forms.MenuItem
+    Friend WithEvents dbgSub As System.Windows.Forms.DataGrid
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents txtPosition As System.Windows.Forms.TextBox
+    Friend WithEvents txtShainName As System.Windows.Forms.TextBox
+    Friend WithEvents txtKokyakuName As System.Windows.Forms.TextBox
+    Friend WithEvents txtShainID As System.Windows.Forms.TextBox
+    Friend WithEvents txtKokyakuID As System.Windows.Forms.TextBox
+    Friend WithEvents txtDate As System.Windows.Forms.TextBox
+    Friend WithEvents txtNo As System.Windows.Forms.TextBox
+    Friend WithEvents btnLast As System.Windows.Forms.Button
+    Friend WithEvents btnNext As System.Windows.Forms.Button
+    Friend WithEvents btnNew As System.Windows.Forms.Button
+    Friend WithEvents btnPrevious As System.Windows.Forms.Button
+    Friend WithEvents btnFirst As System.Windows.Forms.Button
+    Friend WithEvents MainMenu1 As System.Windows.Forms.MainMenu
+    Friend WithEvents mnuFile As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuFileLoad As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuFileSave As System.Windows.Forms.MenuItem
     Friend WithEvents mnuFileStep2 As System.Windows.Forms.MenuItem
     Friend WithEvents mnuFileQuit As System.Windows.Forms.MenuItem
-  Friend WithEvents mnuEdit As System.Windows.Forms.MenuItem
-  Friend WithEvents mnuEditFind As System.Windows.Forms.MenuItem
-  Friend WithEvents mnuEditStep As System.Windows.Forms.MenuItem
-  Friend WithEvents mnuEditDelete As System.Windows.Forms.MenuItem
-  Friend WithEvents DsSample1 As SampleAppli.dsSample
-  Friend WithEvents DataGridTableStyle1 As System.Windows.Forms.DataGridTableStyle
-  Friend WithEvents DataGridTextBoxColumn1 As System.Windows.Forms.DataGridTextBoxColumn
-  Friend WithEvents DataGridTextBoxColumn2 As System.Windows.Forms.DataGridTextBoxColumn
-  Friend WithEvents DataGridTextBoxColumn3 As System.Windows.Forms.DataGridTextBoxColumn
-  Friend WithEvents DataGridTextBoxColumn4 As System.Windows.Forms.DataGridTextBoxColumn
-  Friend WithEvents DataGridTextBoxColumn5 As System.Windows.Forms.DataGridTextBoxColumn
-  Friend WithEvents DataGridTextBoxColumn6 As System.Windows.Forms.DataGridTextBoxColumn
-  <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    Friend WithEvents mnuEdit As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuEditFind As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuEditStep As System.Windows.Forms.MenuItem
+    Friend WithEvents mnuEditDelete As System.Windows.Forms.MenuItem
+    Friend WithEvents DsSample1 As SampleAppli.dsSample
+    Friend WithEvents DataGridTableStyle1 As System.Windows.Forms.DataGridTableStyle
+    Friend WithEvents DataGridTextBoxColumn1 As System.Windows.Forms.DataGridTextBoxColumn
+    Friend WithEvents DataGridTextBoxColumn2 As System.Windows.Forms.DataGridTextBoxColumn
+    Friend WithEvents DataGridTextBoxColumn3 As System.Windows.Forms.DataGridTextBoxColumn
+    Friend WithEvents DataGridTextBoxColumn4 As System.Windows.Forms.DataGridTextBoxColumn
+    Friend WithEvents DataGridTextBoxColumn5 As System.Windows.Forms.DataGridTextBoxColumn
+    Friend WithEvents DataGridTextBoxColumn6 As System.Windows.Forms.DataGridTextBoxColumn
+    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.dbgSub = New System.Windows.Forms.DataGrid()
         Me.DsSample1 = New SampleAppli.dsSample()
@@ -611,5 +611,33 @@ Public Class frmDenpyo
 
         'コントロール
         btnPrevious.Enabled = False
+    End Sub
+
+    Private Sub txtKokyakuID_Validating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles txtKokyakuID.Validating
+        Dim r As DataRow   '検索したレコード
+
+        '検索
+        r = DsSample1.T_顧客.Rows.Find(txtKokyakuID.Text)
+        If IsNothing(r) Then
+            MessageBox.Show("該当する［顧客ID］は見つかりません", "伝票入力")
+            txtKokyakuName.Text = ""
+            e.Cancel = True
+        Else
+            txtKokyakuName.Text = r("氏名")
+        End If
+    End Sub
+
+    Private Sub txtShainID_Validating(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles txtShainID.Validating
+        Dim r As DataRow   '検索したレコード
+
+        '検索
+        r = DsSample1.T_社員.Rows.Find(txtShainID.Text)
+        If IsNothing(r) Then
+            MessageBox.Show("該当する［社員ID］は見つかりません", "伝票入力")
+            txtShainName.Text = ""
+            e.Cancel = True
+        Else
+            txtShainName.Text = r("氏名")
+        End If
     End Sub
 End Class
