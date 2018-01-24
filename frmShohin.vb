@@ -262,4 +262,36 @@ Public Class frmShohin
         Me.Close()
     End Sub
 
+    Private Sub mnuEditFind_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuEditFind.Click
+        Dim fm As New frmDialog()   '検索フォーム
+        Dim flg As Boolean    '見つかったかどうか
+        Dim i As Integer      'カウンタ
+        Dim iRow As Integer   '検索したレコード
+
+        'キャンセルされたとき
+        If fm.ShowDialog = DialogResult.Cancel Then
+            Exit Sub
+        End If
+
+        '値が入力されなかったとき
+        If fm.Value = "" Then
+            Exit Sub
+        End If
+
+        '検索準備
+        dvShohin.RowFilter = ""
+        dvShohin.Sort = "商品番号"
+
+        '検索
+        iRow = dvShohin.Find(fm.Value)
+        If (iRow <> -1) Then
+            dbgShohin.CurrentRowIndex = iRow
+        Else
+            MessageBox.Show("該当する［商品番号］はありません", "商品登録",
+          MessageBoxButtons.OK, MessageBoxIcon.Information)
+        End If
+        dvShohin.Sort = ""
+    End Sub
+
+
 End Class
