@@ -682,4 +682,36 @@ Public Class frmDenpyo
             MessageBox.Show("該当する［注文NO］はありません", "伝票入力")
         End If
     End Sub
+
+    Private Sub mnuFileLoad_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuFileLoad.Click
+        Dim btn As DialogResult   '選択したボタン
+
+        '確認
+        btn = MessageBox.Show("編集中のデータを破棄して、データを再ロードします。" _
+      & ControlChars.CrLf & "よろしいですか", "伝票入力",
+      MessageBoxButtons.OKCancel, MessageBoxIcon.Question)
+
+        'キャンセルボタンを選択
+        If btn = DialogResult.Cancel Then
+            Exit Sub
+        End If
+
+        'データセットの初期化
+        DsSample1.Clear()
+        DsSample1.T_サブ.Columns.Remove("金額")
+
+        'データ読み込み
+        m_fm.odaMain.Fill(DsSample1, "T_メイン")
+        m_fm.odaSub.Fill(DsSample1, "T_サブ")
+        m_fm.odaKokyaku.Fill(DsSample1, "T_顧客")
+        m_fm.odaShain.Fill(DsSample1, "T_社員")
+        m_fm.odaShohin.Fill(DsSample1, "T_商品")
+
+        '演算フィールド
+        DsSample1.T_サブ.Columns("金額").Expression = "単価*数量"
+
+        '初期化
+        DispPosition()
+        DispName()
+    End Sub
 End Class
